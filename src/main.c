@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
           token = strtok(NULL, " ");
           
         } 
-        printf("%s",echo);
+        printf("%s\n",echo);
       }
       else
       {
