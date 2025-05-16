@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
     if(input == "exit 0")
     {
       exit(0);
+      running = false;
     }
     else if (input == "exit 1")
     {
