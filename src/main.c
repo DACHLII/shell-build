@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
   // Wait for user input
   bool running = true;
   char input[100];
+
   while(running)
   {
     printf("$ ");
@@ -23,19 +24,33 @@ int main(int argc, char *argv[]) {
     input[strlen(input) - 1] = '\0';
     // check for exit
     
-
-    if(strcmp(input, "exit 0") == 0)
+    char* token = strtok(input, " ");
+    while(token != NULL)
     {
-      running = false;
-      exit(0);
-    }
-    else if (strcmp(input, "exit 1") == 0) {
+      if(strcmp(token, "exit") == 0)
+      {
+        token = strtok(input, " ");
+        if(strcmp(token, "0") == 0)
+        {
+          running = false;
+          exit(0);
 
-      exit(1);
-    }
-    else
-    {
-      printf("%s: command not found\n", input);
+        }
+        else if(strcmp(token, "1") == 0)
+        {
+          exit(1);
+        }
+      }
+      else if(strcmp(token, "echo") == 0)
+      {
+        char* echo_print = input + strlen("echo");
+        printf("%s",echo_print);
+      }
+      else
+      {
+        printf("%s: command not found\n", input);
+      }
+
     }
   
     setbuf(stdout, NULL);
