@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
       else if(strcmp(token, "echo") == 0)
       {
         char echo[100];
-        echo[0] = "\0";
+        echo[0] = '\0';
         strtok(input, " ");
         strcat(echo," ");
         strcat(echo,token);
