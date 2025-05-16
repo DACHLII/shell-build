@@ -45,11 +45,11 @@ int main(int argc, char *argv[]) {
       {
         char echo[100];
         echo[0] = '\0';
-        strtok(input, " ");
+        token = strtok(input, " ");
         strcat(echo," ");
         strcat(echo,token);
         while(token != NULL){
-          strtok(NULL, " ");
+          token = strtok(NULL, " ");
           strcat(echo," ");
           strcat(echo,token);
         } 
