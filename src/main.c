@@ -46,8 +46,9 @@ int main(int argc, char *argv[]) {
         char echo[100];
         while(token != NULL){
           strcat(echo,token);
-          printf("%s",echo);
+          token = strtok(input, " ");
         } 
+        printf("%s",echo);
       }
       else
       {
