@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
   setbuf(stdout, NULL);
 
   // Uncomment this block to pass the first stage
- // printf("$ ");
+ printf("$ ");
 
   // REPL loop
   // Wait for user input
