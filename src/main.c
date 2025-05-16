@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
           strcat(echo," ");
           strcat(echo,token);
         } 
-        printf("%s",echo);
+        printf("reached echo: %s",echo);
       }
       else
       {
