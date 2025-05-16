@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
         echo[0] = '\0';
         char echo_input[100];
         strcpy(echo_input,input);
-        printf("input string: %s", echo_input);
+        //printf("input string: %s", echo_input);
         token = strtok(echo_input, " ");
         token = strtok(NULL," ");
 
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
           token = strtok(NULL, " ");
           
         } 
-        printf("reached echo: %s",echo);
+        printf("%s",echo);
       }
       else
       {
