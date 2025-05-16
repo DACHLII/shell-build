@@ -28,11 +28,11 @@ int main(int argc, char *argv[]) {
     {
       running = false;
       printf("%s", input);
-      printf("reached exit 0");
+
       exit(0);
     }
     else if (strcmp(input, "exit 1") == 0) {
-      printf("reached exit 1");
+
       exit(1);
     }
     else
