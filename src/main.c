@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
       }
       else if(strcmp(token, "echo") == 0)
       {
-        
+        printf("input string: %s", input);
         char echo[100];
         echo[0] = '\0';
         token = strtok(input, " ");
