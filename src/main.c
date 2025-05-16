@@ -24,18 +24,18 @@ int main(int argc, char *argv[]) {
     // check for exit
     
 
-    if(strcmp(input, "exit 0"))
-    {
-      running = false;
-      exit(0);
-    }
-    else if(input, "exit 1") {
-      exit(1);
-    }
-    else
-    {
-      printf("%s: command not found\n", input);
-    }
+    // if(strcmp(input, "exit 0"))
+    // {
+    //   running = false;
+    //   exit(0);
+    // }
+    // else if(input, "exit 1") {
+    //   exit(1);
+    // }
+    // else
+    // {
+    printf("%s: command not found\n", input);
+    //}
   
     setbuf(stdout, NULL);
 
