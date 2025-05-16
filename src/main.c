@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     if(strcmp(input, "exit 0"))
     {
       running = false;
+      printf("%s", input);
       printf("reached exit 0");
       exit(0);
     }
