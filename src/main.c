@@ -48,17 +48,15 @@ int main(int argc, char *argv[]) {
         echo[0] = '\0';
         token = strtok(input, " ");
         token = strtok(NULL," ");
-        if(token != NULL)
-        {
-          strcat(echo," ");
-          strcat(echo,token);
-        }
 
         while(token != NULL)
         {
-          strcat(echo," ");
-          token = strtok(NULL, " ");
+          if(strlen(echo) > 0){
+            strcat(echo," ");
+          }
           strcat(echo,token);
+          token = strtok(NULL, " ");
+          
         } 
         printf("reached echo: %s",echo);
       }
