@@ -23,28 +23,18 @@ int main(int argc, char *argv[]) {
     input[strlen(input) - 1] = '\0';
     // check for exit
     
-    char* token = strtok(input, " ");
 
-    if(strcmp(token, "exit"))
+    if(strcmp(input, "exit 0"))
     {
-      while(token != NULL)
-      {
-        token = strtok(input, " ");
-        if(strcmp(token, "0"))
-        {
-          running = false;
-          exit(0);
-        }
-        else if (strcmp(token, "1"))
-        {
-          exit(1);
-        }
-      }
-
+      running = false;
+      exit(0);
+    }
+    else if(input, "exit 1") {
+      exit(1);
     }
     else
     {
-        printf("%s: command not found\n", input);
+      printf("%s: command not found\n", input);
     }
   
     setbuf(stdout, NULL);
