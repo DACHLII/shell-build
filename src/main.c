@@ -22,10 +22,12 @@ int main(int argc, char *argv[]) {
     // null terminate the input
     input[strlen(input) - 1] = '\0';
     // check for exit
+    
     if(input == "exit 0")
     {
-      exit(0);
       running = false;
+      exit(0);
+
     }
     else if (input == "exit 1")
     {
