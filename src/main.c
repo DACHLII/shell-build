@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
       {
         printf("%s: command not found\n", input);
       }
-
+      token = strtok(input, " ");
     }
   
     setbuf(stdout, NULL);
