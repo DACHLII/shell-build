@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
       else if(strcmp(token, "echo") == 0)
       {
         char* echo_print = input + strlen("echo");
+        printf("%s",echo_print);
       }
       else
       {
