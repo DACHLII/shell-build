@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
   // Wait for user input
   bool running = true;
   char input[100];
+  char token_input[100];
 
   while(running)
   {
@@ -22,9 +23,10 @@ int main(int argc, char *argv[]) {
     fgets(input, 100, stdin);
     // null terminate the input
     input[strlen(input) - 1] = '\0';
+    strcpy(token_input,input);
     // check for exit
     
-    char* token = strtok(input, " ");
+    char* token = strtok(token_input, " ");
     while(token != NULL)
     {
       if(strcmp(token, "exit") == 0)
@@ -43,10 +45,13 @@ int main(int argc, char *argv[]) {
       }
       else if(strcmp(token, "echo") == 0)
       {
-        printf("input string: %s", input);
+        
         char echo[100];
         echo[0] = '\0';
-        token = strtok(input, " ");
+        char echo_input[100];
+        strcpy(echo_input,input);
+        printf("input string: %s", echo_input);
+        token = strtok(echo_input, " ");
         token = strtok(NULL," ");
 
         while(token != NULL)
