@@ -24,14 +24,14 @@ int main(int argc, char *argv[]) {
     // check for exit
     
 
-    if(strcmp(input, "exit 0"))
+    if(strcmp(input, "exit 0") == true)
     {
       running = false;
       printf("%s", input);
       printf("reached exit 0");
       exit(0);
     }
-    else if(input, "exit 1") {
+    else if (strcmp(input, "exit 1") == true) {
       printf("reached exit 1");
       exit(1);
     }
