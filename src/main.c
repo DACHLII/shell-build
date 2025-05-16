@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     {
       if(strcmp(token, "exit") == 0)
       {
-        token = strtok(input, " ");
+        token = strtok(NULL, " ");
         if(strcmp(token, "0") == 0)
         {
           running = false;
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
       {
         printf("%s: command not found\n", input);
       }
-      token = strtok(input, " ");
+      token = strtok(NULL, " ");
     }
   
     setbuf(stdout, NULL);
