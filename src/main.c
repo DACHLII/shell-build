@@ -43,8 +43,11 @@ int main(int argc, char *argv[]) {
       }
       else if(strcmp(token, "echo") == 0)
       {
-        char* echo_print = input + strlen("echo");
-        printf("%s",echo_print);
+        char echo[100];
+        while(token != NULL){
+          strcat(echo,token);
+          printf("%s",echo);
+        } 
       }
       else
       {
