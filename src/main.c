@@ -56,8 +56,8 @@ int main(int argc, char *argv[]) {
 
         while(token != NULL)
         {
-          token = strtok(NULL, " ");
           strcat(echo," ");
+          token = strtok(NULL, " ");
           strcat(echo,token);
         } 
         printf("reached echo: %s",echo);
