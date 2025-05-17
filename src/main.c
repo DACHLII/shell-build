@@ -58,7 +58,8 @@ int main(int argc, char *argv[]) {
 
         while(token != NULL)
         {
-          if(strlen(echo) > 0){
+          if(strlen(echo) > 0)
+          {
             strcat(echo," ");
           }
           strcat(echo,token);
@@ -78,14 +79,23 @@ int main(int argc, char *argv[]) {
         }
         else
         {
-          printf("%s: command not found\n", input);
+          char type_err[100];
+          type_err[0] = '/0';
+          while(token != NULL)
+          {
+            if(strlen(type_err) > 0)
+            {
+            strcat(type_err," ");
+            }
+            strcat(type_err,token);
+            token = strtok(NULL, " ");
+          }
+          printf("type %s: command not found\n", type_err);
         }
 
       }
       else
       {
-        printf("%s is the token at line 87",token);
-        printf("reached here");
         printf("%s: command not found\n", input);
       }
       token = strtok(NULL, " ");
