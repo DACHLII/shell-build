@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
             //printf("%s, this is the token at 93",token);
           }
           type_err[strlen(type_err) - 1] = '\0';
-          printf("type %s: command not found\n", type_err);
+          printf("%s: command not found\n", type_err);
         }
 
       }
