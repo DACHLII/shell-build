@@ -97,6 +97,7 @@ int main(int argc, char *argv[]) {
             {
               strcat(ind_path,path_token);
               //grabbed a path
+              strcat(ind_path,"/");
               strcat(ind_path,token);
               //tack on the user-given cmd : is it executable?
               if(access(ind_path,X_OK))
