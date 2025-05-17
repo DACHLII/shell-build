@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
         else
         {
           char type_err[100];
-          type_err[0] = '/0';
+          
           while(token != NULL)
           {
             if(strlen(type_err) > 0)
@@ -90,6 +90,7 @@ int main(int argc, char *argv[]) {
             strcat(type_err,token);
             token = strtok(NULL, " ");
           }
+          type_err[strlen(type_err) - 1] = '/0';
           printf("type %s: command not found\n", type_err);
         }
 
