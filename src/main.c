@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
             type_err[0] = '\0';
           }
         }
-        return;
+        continue;
       }
       else
       {
