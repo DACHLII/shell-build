@@ -93,16 +93,18 @@ int main(int argc, char *argv[]) {
             }
             strcat(type_err,token);
             token = strtok(NULL, " ");
-            printf("%s, this is the token at 93",token);
+            //printf("%s, this is the token at 93",token);
           }
           type_err[strlen(type_err)] = '\0';
           printf("%s: not found\n", type_err);
+          type_err[0] = '\0';
         }
 
       }
       else
       {
         printf("%s: command not found\n", input);
+        
       }
       token = strtok(NULL, " ");
     }
