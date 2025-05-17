@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
   // Flush after every printf
@@ -79,25 +80,59 @@ int main(int argc, char *argv[]) {
         }
         else
         {
-          char type_err[100];
-          strcat(type_err,token);
-          // I already grab the first token so just check if there are any more)
-          //printf("%s, this is the token at 85",token);
-          token = strtok(NULL," ");
-          
-          while(token != NULL)
+          // is it a PATH?
+          char *path = getenv("PATH");
+          // path isn't null and path isn't an empty string
+          if(path != NULL && path[0] != '\0')
           {
-            if(strlen(type_err) > 0)
+
+            // copy it over to consume the tokens
+            char token_path[100];
+            strcpy(token_path,path);
+            // meant to hold extracted paths
+            char ind_path[100];
+            char* path_token = strtok(token_path,":");
+
+            while(path_token != NULL)
             {
-            strcat(type_err," ");
+              strcat(ind_path,path_token);
+              //grabbed a path
+              strcat(ind_path,token);
+              //tack on the user-given cmd : is it executable?
+              if(access(ind_path,X_OK))
+              {
+                printf("%s is %s\n",token,ind_path);
+              }
+              // keep going until they are all checked
+              path_token = strtok(NULL,":");
+
             }
-            strcat(type_err,token);
-            token = strtok(NULL, " ");
-            //printf("%s, this is the token at 93",token);
+            // uh oh, no more left to check, default into the type else case
+
           }
-          type_err[strlen(type_err)] = '\0';
-          printf("%s: not found\n", type_err);
-          type_err[0] = '\0';
+          // general type invalid case
+          else{
+
+            char type_err[100];
+            strcat(type_err,token);
+            // I already grab the first token so just check if there are any more)
+            //printf("%s, this is the token at 85",token);
+            token = strtok(NULL," ");
+            
+            while(token != NULL)
+            {
+              if(strlen(type_err) > 0)
+              {
+              strcat(type_err," ");
+              }
+              strcat(type_err,token);
+              token = strtok(NULL, " ");
+              //printf("%s, this is the token at 93",token);
+            }
+            type_err[strlen(type_err)] = '\0';
+            printf("%s: not found\n", type_err);
+            type_err[0] = '\0';
+          }
         }
 
       }
