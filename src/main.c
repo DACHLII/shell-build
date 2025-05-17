@@ -114,7 +114,8 @@ int main(int argc, char *argv[]) {
 
           }
           // general type invalid case
-          else{
+          else
+          {
 
             char type_err[100];
             strcat(type_err,token);
@@ -137,7 +138,7 @@ int main(int argc, char *argv[]) {
             type_err[0] = '\0';
           }
         }
-
+        return;
       }
       else
       {
