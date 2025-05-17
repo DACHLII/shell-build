@@ -92,8 +92,8 @@ int main(int argc, char *argv[]) {
             // meant to hold extracted paths
             char ind_path[100];
             char* path_token = strtok(token_path,":");
-
-            while(path_token != NULL)
+            bool NOT_FOUND = 0;
+            while(path_token != NULL && NOT_FOUND == 0)
             {
               strcat(ind_path,path_token);
               //grabbed a path
@@ -103,6 +103,7 @@ int main(int argc, char *argv[]) {
               if(access(ind_path,X_OK) == 0)
               {
                 printf("%s is %s\n",token,ind_path);
+                NOT_FOUND = 1;
               }
               // keep going until they are all checked, null out ind path first
               ind_path[0] = '\0';
