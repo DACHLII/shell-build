@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
               strcat(ind_path,"/");
               strcat(ind_path,token);
               //tack on the user-given cmd : is it executable?
-              if(access(ind_path,X_OK))
+              if(access(ind_path,X_OK) == 0)
               {
                 printf("%s is %s\n",token,ind_path);
               }
