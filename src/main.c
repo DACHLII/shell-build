@@ -70,6 +70,7 @@ int main(int argc, char *argv[]) {
       {
         // grab the next token (Ideally echo, exit, etc.)
         token = strtok(NULL,"");
+        printf("%s is the curr token, %s");
         if(strcmp(token,"exit") == 0 || strcmp(token,"echo") == 0 || strcmp(token,"type") == 0)
         {
           printf("%s is a shell builtin", token);
