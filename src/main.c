@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     // check for exit
     
     char* token = strtok(token_input, " ");
-    printf("%s is the token at line 30",token);
+    //printf("%s is the token at line 30",token);
     // parse the command while checking for builtins
     while(token != NULL)
     {
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
         } 
         printf("%s\n",echo);
       }
-      else if(strcmp (token, "type"))
+      else if(strcmp (token, "type") == 0)
       {
         // grab the next token (Ideally echo, exit, etc.)
         token = strtok(NULL,"");
