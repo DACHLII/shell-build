@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
         //printf("%s is the curr token, %s");
         if(strcmp(token,"exit") == 0 || strcmp(token,"echo") == 0 || strcmp(token,"type") == 0)
         {
-          printf("%s is a shell builtin", token);
+          printf("%s is a shell builtin\n", token);
         }
         else
         {
