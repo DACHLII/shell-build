@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
           strcat(type_err,token);
           // I already grab the first token so just check if there are any more)
           token = strtok(NULL," ");
-          //printf("%s, this is the token at 84",token);
+          printf("%s, this is the token at 84",token);
           while(token != NULL)
           {
             if(strlen(type_err) > 0)
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
             }
             strcat(type_err,token);
             token = strtok(NULL, " ");
-            //printf("%s, this is the token at 93",token);
+            printf("%s, this is the token at 93",token);
           }
           type_err[strlen(type_err)] = '\0';
           printf("%s: not found\n", type_err);
