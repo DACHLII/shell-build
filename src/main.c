@@ -104,7 +104,8 @@ int main(int argc, char *argv[]) {
               {
                 printf("%s is %s\n",token,ind_path);
               }
-              // keep going until they are all checked
+              // keep going until they are all checked, null out ind path first
+              ind_path[0] = '\0';
               path_token = strtok(NULL,":");
 
             }
