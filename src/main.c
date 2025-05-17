@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     // check for exit
     
     char* token = strtok(token_input, " ");
+    printf("%s is the token at line 30",token);
     // parse the command while checking for builtins
     while(token != NULL)
     {
@@ -83,6 +84,8 @@ int main(int argc, char *argv[]) {
       }
       else
       {
+        printf("%s is the token at line 87",token);
+        printf("reached here");
         printf("%s: command not found\n", input);
       }
       token = strtok(NULL, " ");
