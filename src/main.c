@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     // check for exit
     
     char* token = strtok(token_input, " ");
+    // parse the command while checking for builtins
     while(token != NULL)
     {
       if(strcmp(token, "exit") == 0)
@@ -49,8 +50,8 @@ int main(int argc, char *argv[]) {
         char echo[100];
         echo[0] = '\0';
         char echo_input[100];
+
         strcpy(echo_input,input);
-        //printf("input string: %s", echo_input);
         token = strtok(echo_input, " ");
         token = strtok(NULL," ");
 
@@ -64,6 +65,20 @@ int main(int argc, char *argv[]) {
           
         } 
         printf("%s\n",echo);
+      }
+      else if(strcmp (token, "type"))
+      {
+        // grab the next token (Ideally echo, exit, etc.)
+        token = strtok(NULL,"");
+        if(strcmp(token,"exit") == 0 || strcmp(token,"echo") == 0 || strcmp(token,"type") == 0)
+        {
+          printf("%s is a shell builtin", token);
+        }
+        else
+        {
+          printf("%s: command not found\n", input);
+        }
+
       }
       else
       {
