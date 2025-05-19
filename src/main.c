@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
               token = strtok(NULL, " ");
               //printf("%s, this is the token at 93",token);
             }
-            type_err[strlen(type_err)] = '\0';
+            //type_err[strlen(type_err)] = '\0';
             printf("%s: not found\n", type_err);
             type_err[0] = '\0';
             print = true;
