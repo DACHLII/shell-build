@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
           // general type invalid case
           else
           {
-            if(token == "invalid_apple_command" || token == "invalid_pear_command" || token == "invalid_grape_command" || token == "invalid_strawberry_command")
+            if(token == "invalid_apple_command" || token == "invalid_pear_command" || token == "invalid_grape_command" || token == "invalid_mango_command")
             {
               printf("entering else statement for PATH?");
             }
