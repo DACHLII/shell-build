@@ -121,6 +121,7 @@ int main(int argc, char *argv[]) {
             strcat(type_err,token);
             // I already grab the first token so just check if there are any more)
             //printf("%s, this is the token at 85",token);
+            //debugging
             token = strtok(NULL," ");
             
             while(token != NULL)
