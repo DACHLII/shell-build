@@ -28,9 +28,10 @@ int main(int argc, char *argv[]) {
     // check for exit
     
     char* token = strtok(token_input, " ");
+    bool print = false;
     //printf("%s is the token at line 30",token);
     // parse the command while checking for builtins
-    while(token != NULL)
+    while(token != NULL || print == false)
     {
       if(strcmp(token, "exit") == 0)
       {
@@ -106,7 +107,7 @@ int main(int argc, char *argv[]) {
                 printf("%s is %s\n",token,ind_path);
                 FOUND = true;
                 // get out of loop, do not go into else branch!
-                running = false;
+                print = true;
               }
               // keep going until they are all checked, null out ind path first
               ind_path[0] = '\0';
