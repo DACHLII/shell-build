@@ -93,10 +93,7 @@ int main(int argc, char *argv[]) {
           // path isn't null and path isn't an empty string
           if(path != NULL && path[0] != '\0')
           {
-            if(token == "invalid_apple_command" || token == "invalid_pear_command" || token == "invalid_grape_command" || token == "invalid_strawberry_command")
-            {
-              printf("entering if statement for PATH?");
-            }
+
             
 
             // copy it over to consume the tokens
@@ -132,13 +129,16 @@ int main(int argc, char *argv[]) {
           // general type invalid case
           else
           {
-            
+            if(token == "invalid_apple_command" || token == "invalid_pear_command" || token == "invalid_grape_command" || token == "invalid_strawberry_command")
+            {
+              printf("entering else statement for PATH?");
+            }
             char type_err[100];
             strcat(type_err,token);
             // I already grab the first token so just check if there are any more)
             //printf("%s, this is the token at 85",token);
             //debugging
-            token = strtok(NULL," ");
+            //token = strtok(NULL," ");
             
             while(token != NULL)
             {
@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
               token = strtok(NULL, " ");
               //printf("%s, this is the token at 93",token);
             }
-            //type_err[strlen(type_err)] = '\0';
+            type_err[strlen(type_err)] = '\0';
             printf("%s: not found\n", type_err);
             type_err[0] = '\0';
             print = true;
