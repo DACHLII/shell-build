@@ -113,6 +113,37 @@ int main(int argc, char *argv[]) {
               if(access(ind_path,X_OK) == 0)
               {
                 printf("%s is %s\n",token,ind_path);
+
+
+                char* argv[10];
+                char* argv_token_parse = strcpy(argv_token_parse,token_path);
+                char* argv_token = strtok(argv_token_parse," ");
+                // TODO : handle max args allowed later?
+                int argc = 0;
+                while(argv_token != NULL && argc < 9)
+                {
+                  argv[argc] = token;
+                  argc++;
+                  argv_token = strtok(NULL," ");
+                }
+                argv[argc] = NULL;
+
+                pid_t process = fork();
+                int status;
+                if(process == 0)
+                {
+                  // inside the child process
+                  execvp(argv[0],argc);
+                  return 1; // exec failed
+                }
+                else
+                {
+                  // parent process, wait
+                  waitpid(process,&status, 0);
+                }
+                
+
+
                 FOUND = true;
                 // get out of loop, do not go into else branch!
                 print = true;
