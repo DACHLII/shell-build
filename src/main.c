@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     bool print = false;
     //printf("%s is the token at line 30",token);
     // parse the command while checking for builtins
-    while(token != NULL || print == false)
+    while(token != NULL && print == false)
     {
       if(strcmp(token, "exit") == 0)
       {
@@ -69,6 +69,8 @@ int main(int argc, char *argv[]) {
           
         } 
         printf("%s\n",echo);
+        print = true;
+        break;
       }
       else if(strcmp (token, "type") == 0)
       {
@@ -79,6 +81,8 @@ int main(int argc, char *argv[]) {
         if(strcmp(token,"exit") == 0 || strcmp(token,"echo") == 0 || strcmp(token,"type") == 0)
         {
           printf("%s is a shell builtin\n", token);
+          print = true;
+          break;
         }
         else
         {
@@ -108,6 +112,7 @@ int main(int argc, char *argv[]) {
                 FOUND = true;
                 // get out of loop, do not go into else branch!
                 print = true;
+                break;
               }
               // keep going until they are all checked, null out ind path first
               ind_path[0] = '\0';
@@ -141,14 +146,18 @@ int main(int argc, char *argv[]) {
             type_err[strlen(type_err)] = '\0';
             printf("%s: not found\n", type_err);
             type_err[0] = '\0';
+            print = true;
+            break;
           }
         }
-        continue;
+        //continue;
       }
       else
       {
         //printf("enters else branch");
         printf("%s: command not found\n", input);
+        print = true;
+        break;
         
       }
       token = strtok(NULL, " ");
