@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
           // path isn't null and path isn't an empty string
           if(path != NULL && path[0] != '\0')
           {
-            if(token == "invalid_apple_command" || token == "invalid_pear_command")
+            if(token == "invalid_apple_command" || token == "invalid_pear_command" || token == "invalid_grape_command" || token == "invalid_strawberry_command")
             {
               printf("entering if statement for PATH?");
             }
