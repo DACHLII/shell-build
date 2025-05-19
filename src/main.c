@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
       }
       else if(strcmp (token, "type") == 0)
       {
+        printf("enters else if branch");
         // grab the next token (Ideally echo, exit, etc.)
         token = strtok(NULL,"");
         //printf("%s is the curr token, %s");
@@ -116,7 +117,7 @@ int main(int argc, char *argv[]) {
           // general type invalid case
           else
           {
-
+            printf("enters else branch");
             char type_err[100];
             strcat(type_err,token);
             // I already grab the first token so just check if there are any more)
