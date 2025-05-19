@@ -78,6 +78,8 @@ int main(int argc, char *argv[]) {
         // grab the next token (Ideally echo, exit, etc.)
         token = strtok(NULL,"");
         //printf("%s is the curr token, %s");
+
+        //very general case for standard checks on existing commands using type
         if(strcmp(token,"exit") == 0 || strcmp(token,"echo") == 0 || strcmp(token,"type") == 0)
         {
           printf("%s is a shell builtin\n", token);
@@ -91,6 +93,11 @@ int main(int argc, char *argv[]) {
           // path isn't null and path isn't an empty string
           if(path != NULL && path[0] != '\0')
           {
+            if(token == "invalid_apple_command")
+            {
+              printf("entering if statement for PATH?");
+            }
+            
 
             // copy it over to consume the tokens
             char token_path[100];
