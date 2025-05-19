@@ -127,13 +127,13 @@ int main(int argc, char *argv[]) {
 
           }
           // general type invalid case
-          else
+          if(print == false)
           {
-            printf("%s", token);
-            if(strcmp(token,"invalid_apple_command") == 0 || strcmp(token,"invalid_pear_command") == 0  || strcmp(token,"invalid_grape_command") == 0  ||strcmp(token,"invalid_mango_command") == 0 || strcmp(token,"invalid_blueberry_command") == 0 || strcmp(token,"invalid_banana_command") == 0 ||strcmp(token,"invalid_orange_command") == 0  ) 
-            {
-              printf("entering else statement for PATH?"); //sergkijkjy
-            }
+            // printf("%s", token);
+            // if(strcmp(token,"invalid_apple_command") == 0 || strcmp(token,"invalid_pear_command") == 0  || strcmp(token,"invalid_grape_command") == 0  ||strcmp(token,"invalid_mango_command") == 0 || strcmp(token,"invalid_blueberry_command") == 0 || strcmp(token,"invalid_banana_command") == 0 ||strcmp(token,"invalid_orange_command") == 0  ) 
+            // {
+            //   printf("entering else statement for PATH?"); //sergkijkjy
+            // }
             char type_err[100];
             strcat(type_err,token);
             // I already grab the first token so just check if there are any more)
