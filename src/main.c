@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <sys/wait.h>
+
 
 int main(int argc, char *argv[]) {
   // Flush after every printf
@@ -133,7 +135,7 @@ int main(int argc, char *argv[]) {
                 if(process == 0)
                 {
                   // inside the child process
-                  execvp(argv[0],argc);
+                  execvp(argv[0],argv);
                   return 1; // exec failed
                 }
                 else
