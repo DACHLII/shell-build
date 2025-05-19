@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
           {
             if(strcmp(token,"invalid_apple_command") == 0 || strcmp(token,"invalid_pear_command") == 0  || strcmp(token,"invalid_grape_command") == 0  ||strcmp(token,"invalid_mango_command") == 0 || strcmp(token,"invalid_blueberry_command") == 0 ) 
             {
-              printf("entering else statement for PATH?"); //serg
+              printf("entering else statement for PATH?"); //sergki
             }
             char type_err[100];
             strcat(type_err,token);
