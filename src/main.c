@@ -115,9 +115,7 @@ int main(int argc, char *argv[]) {
             type_err[strlen(type_err)] = '\0';
             printf("%s: not found\n", type_err);
             type_err[0] = '\0';
-            input[0] ='\0';
             print = true;
-            
             //break;
           }
         }
@@ -159,7 +157,6 @@ int main(int argc, char *argv[]) {
         //printf("enters else branch");
         printf("%s: command not found\n", input);
         print = true;
-        input[0] ='\0';
         //break;
         
       }
@@ -191,6 +188,7 @@ bool is_path(char ind_path[], char* token)
     bool FOUND = false;
     while(path_token != NULL && FOUND == false)
     {
+      ind_path[0] = '\0';
       strcat(ind_path,path_token);
       //grabbed a path
       strcat(ind_path,"/");
@@ -205,7 +203,7 @@ bool is_path(char ind_path[], char* token)
         //break;
       }
       // keep going until they are all checked, null out ind path first
-      ind_path[0] = '\0';
+      
       path_token = strtok(NULL,":");
 
     }
