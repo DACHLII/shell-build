@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
       {
         char* argv[10];
         char argv_token_parse[100];
-        argv_token_parse = strcpy(argv_token_parse,input);
+        strcpy(argv_token_parse,input);
         char* argv_token = strtok(argv_token_parse," ");
         // TODO : handle max args allowed later?
         int argc = 0;
