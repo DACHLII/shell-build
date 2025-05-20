@@ -124,6 +124,7 @@ int main(int argc, char *argv[]) {
       }
       else if(is_path(ind_path,token) == true)//call boolean function to check if the path is good)
       {
+        // ignore commment lol
         char* argv[10];
         char argv_token_parse[100];
         strcpy(argv_token_parse,input);
