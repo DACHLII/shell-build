@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   bool running = true;
   char input[100];
   char token_input[100];
-  char ind_path[100];
+  char ind_path[512];
 
   while(running)
   {
@@ -180,7 +180,7 @@ bool is_path(char ind_path[], char* token)
   if(path != NULL && path[0] != '\0')
   {
     // copy it over to consume the tokens
-    char token_path[100];
+    char token_path[512];
     strcpy(token_path,path);
     // meant to hold extracted paths
     // ! char ind_path[100];
