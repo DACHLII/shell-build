@@ -6,6 +6,8 @@
 #include <sys/wait.h>
 
 bool is_path(char ind_path[], char* token);
+void cat_subtokens(char dest[], char* token)
+
 int main(int argc, char *argv[]) {
   // Flush after every printf
   setbuf(stdout, NULL);
@@ -61,23 +63,14 @@ int main(int argc, char *argv[]) {
         token = strtok(echo_input, " ");
         token = strtok(NULL," ");
 
-        while(token != NULL)
-        {
-          if(strlen(echo) > 0)
-          {
-            strcat(echo," ");
-          }
-          strcat(echo,token);
-          token = strtok(NULL, " ");
-          
-        } 
+        cat_subtokens(echo_token);
         printf("%s\n",echo);
         print = true;
         //break;
       }
       else if (strcmp(token,"pwd") == 0)
       {
-        
+
       }
       else if(strcmp (token, "type") == 0)
       {
@@ -107,16 +100,8 @@ int main(int argc, char *argv[]) {
           {
             char type_err[100];
             type_err[0] = '\0';
-            while(token != NULL)
-            {
-              if(strlen(type_err) > 0)
-              {
-              strcat(type_err," ");
-              }
-              strcat(type_err,token);
-              token = strtok(NULL, " ");
-              //printf("%s, this is the token at 93",token);
-            }
+            cat_subtokens(type_err,token);
+
             type_err[strlen(type_err)] = '\0';
             printf("%s: not found\n", type_err);
             //type_err[0] = '\0';
@@ -215,5 +200,18 @@ bool is_path(char ind_path[], char* token)
     }
     // uh oh, no more left to check, default into the type else case
     return print;
+  }
+}
+void cat_subtokens(char dest[], char* token)
+{
+  while(token != NULL)
+  {
+    if(strlen(dest) > 0)
+    {
+    strcat(dest," ");
+    }
+    strcat(dest,token);
+    token = strtok(NULL, " ");
+    //printf("%s, this is the token at 93",token);
   }
 }
