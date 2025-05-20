@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   bool running = true;
   char input[100];
   char token_input[100];
-  char* ind_path[100];
+  char ind_path[100];
 
   while(running)
   {
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
       else if(is_path(ind_path,token) == true)//call boolean function to check if the path is good)
       {
         char* argv[10];
-        char* argv_token_parse[100];
+        char argv_token_parse[100];
         argv_token_parse = strcpy(argv_token_parse,input);
         char* argv_token = strtok(argv_token_parse," ");
         // TODO : handle max args allowed later?
