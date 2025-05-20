@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-bool is_path(char*[] ind_path, char* token);
+bool is_path(char* ind_path[], char* token);
 int main(int argc, char *argv[]) {
   // Flush after every printf
   setbuf(stdout, NULL);
@@ -124,7 +124,8 @@ int main(int argc, char *argv[]) {
       else if(is_path(ind_path,token) == true)//call boolean function to check if the path is good)
       {
         char* argv[10];
-        char* argv_token_parse = strcpy(argv_token_parse,token_path);
+        char* argv_token_parse[100];
+        argv_token_parse = strcpy(argv_token_parse,input);
         char* argv_token = strtok(argv_token_parse," ");
         // TODO : handle max args allowed later?
         int argc = 0;
@@ -170,7 +171,7 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-bool is_path(char*[] ind_path, char* token)
+bool is_path(char* ind_path[], char* token)
 {
   // is it a PATH?
   bool print = false;
