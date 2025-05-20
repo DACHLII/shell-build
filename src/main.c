@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
         int argc = 0;
         while(argv_token != NULL && argc < 9)
         {
-          argv[argc] = token;
+          argv[argc] = argv_token;
           argc++;
           argv_token = strtok(NULL," ");
         }
