@@ -102,6 +102,7 @@ int main(int argc, char *argv[]) {
           else 
           {
             char type_err[100];
+            type_err[0] = '\0';
             while(token != NULL)
             {
               if(strlen(type_err) > 0)
@@ -114,7 +115,7 @@ int main(int argc, char *argv[]) {
             }
             type_err[strlen(type_err)] = '\0';
             printf("%s: not found\n", type_err);
-            type_err[0] = '\0';
+            //type_err[0] = '\0';
             print = true;
             //break;
           }
