@@ -174,6 +174,7 @@ int main(int argc, char *argv[]) {
 bool is_path(char ind_path[], char* token)
 {
   // is it a PATH?
+  ind_path[0] = '\0';
   bool print = false;
   char *path = getenv("PATH");
   // path isn't null and path isn't an empty string
