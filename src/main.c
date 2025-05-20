@@ -5,15 +5,13 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-bool is_path(char ind_path[], char* token);
-void cat_subtokens(char dest[], char* token)
-
-int main(int argc, char *argv[]) {
+bool is_path(char ind_path[], char *token);
+int main(int argc, char *argv[])
+{
   // Flush after every printf
   setbuf(stdout, NULL);
 
   // Uncomment this block to pass the first stage
-
 
   // REPL loop
   // Wait for user input
@@ -22,196 +20,198 @@ int main(int argc, char *argv[]) {
   char token_input[100];
   char ind_path[100];
 
-  while(running)
+  while (running)
   {
     printf("$ ");
-    //read
+    // read
     fgets(input, 100, stdin);
     // null terminate the input
     input[strlen(input) - 1] = '\0';
-    strcpy(token_input,input);
+    strcpy(token_input, input);
     // check for exit
-    
-    char* token = strtok(token_input, " ");
+
+    char *token = strtok(token_input, " ");
     bool print = false;
-    //printf("%s is the token at line 30",token);
-    // parse the command while checking for builtins
-    while(token != NULL && print == false)
+    // printf("%s is the token at line 30",token);
+    //  parse the command while checking for builtins
+    while (token != NULL && print == false)
     {
-      if(strcmp(token, "exit") == 0)
+      if (strcmp(token, "exit") == 0)
       {
         token = strtok(NULL, " ");
-        if(strcmp(token, "0") == 0)
+        if (strcmp(token, "0") == 0)
         {
           running = false;
           exit(0);
-
         }
-        else if(strcmp(token, "1") == 0)
+        else if (strcmp(token, "1") == 0)
         {
           exit(1);
         }
       }
-      else if(strcmp(token, "echo") == 0)
+      else if (strcmp(token, "echo") == 0)
       {
-        
+
         char echo[100];
         echo[0] = '\0';
         char echo_input[100];
 
-        strcpy(echo_input,input);
+        strcpy(echo_input, input);
         token = strtok(echo_input, " ");
-        token = strtok(NULL," ");
+        token = strtok(NULL, " ");
 
-        cat_subtokens(echo_token);
-        printf("%s\n",echo);
+        while (token != NULL)
+        {
+          if (strlen(echo) > 0)
+          {
+            strcat(echo, " ");
+          }
+          strcat(echo, token);
+          token = strtok(NULL, " ");
+        }
+        printf("%s\n", echo);
         print = true;
-        //break;
+        // break;
       }
-      else if (strcmp(token,"pwd") == 0)
+      else if (strcmp(token, "pwd") == 0)
       {
-
+        ind_path[0] = '\0';
+        if(getcwd(ind_path,sizeof(ind_path)) != NULL)
+        {
+          printf("%s\n",ind_path);
+        }
+        
       }
-      else if(strcmp (token, "type") == 0)
+      else if (strcmp(token, "type") == 0)
       {
-        //printf("enters else if branch");
-        // grab the next token (Ideally echo, exit, etc.)
-        token = strtok(NULL,"");
-        //printf("%s is the curr token, %s");
+        // printf("enters else if branch");
+        //  grab the next token (Ideally echo, exit, etc.)
+        token = strtok(NULL, "");
+        // printf("%s is the curr token, %s");
 
-        //very general case for standard checks on existing commands using type
-        if(strcmp(token,"exit") == 0 || strcmp(token,"echo") == 0 || strcmp(token,"type") == 0 || strcmp(token,"pwd") == 0)
+        // very general case for standard checks on existing commands using type
+        if (strcmp(token, "exit") == 0 || strcmp(token, "echo") == 0 || strcmp(token, "type") == 0 || strcmp(token, "pwd") == 0)
         {
           printf("%s is a shell builtin\n", token);
           print = true;
-          //break;
+          // break;
         }
         else
         {
           // is it a PATH?
-          //char ind_path[100];
-          print = is_path(ind_path,token);
-          if(print == true)
+          // char ind_path[100];
+          print = is_path(ind_path, token);
+          if (print == true)
           {
-            printf("%s is %s\n",token,ind_path);
+            printf("%s is %s\n", token, ind_path);
           }
           // general type invalid case
-          else 
+          else
           {
             char type_err[100];
             type_err[0] = '\0';
-            cat_subtokens(type_err,token);
-
+            while (token != NULL)
+            {
+              if (strlen(type_err) > 0)
+              {
+                strcat(type_err, " ");
+              }
+              strcat(type_err, token);
+              token = strtok(NULL, " ");
+              // printf("%s, this is the token at 93",token);
+            }
             type_err[strlen(type_err)] = '\0';
             printf("%s: not found\n", type_err);
-            //type_err[0] = '\0';
+            // type_err[0] = '\0';
             print = true;
-            //break;
+            // break;
           }
         }
-        //continue;
+        // continue;
       }
-      else if(is_path(ind_path,token) == true)//call boolean function to check if the path is good)
+      else if (is_path(ind_path, token) == true) // call boolean function to check if the path is good)
       {
         // ignore commment lol
-        char* argv[10];
+        char *argv[10];
         char argv_token_parse[100];
-        strcpy(argv_token_parse,input);
-        char* argv_token = strtok(argv_token_parse," ");
+        strcpy(argv_token_parse, input);
+        char *argv_token = strtok(argv_token_parse, " ");
         // TODO : handle max args allowed later?
         int argc = 0;
-        while(argv_token != NULL && argc < 9)
+        while (argv_token != NULL && argc < 9)
         {
           argv[argc] = argv_token;
           argc++;
-          argv_token = strtok(NULL," ");
+          argv_token = strtok(NULL, " ");
         }
         argv[argc] = NULL;
 
         pid_t process = fork();
         int status;
-        if(process == 0)
+        if (process == 0)
         {
           // inside the child process
-          execvp(argv[0],argv);
+          execvp(argv[0], argv);
           return 1; // exec failed
         }
         else
         {
           // parent process, wait
-          waitpid(process,&status, 0);
+          waitpid(process, &status, 0);
         }
-                
       }
       else
       {
-        //printf("enters else branch");
+        // printf("enters else branch");
         printf("%s: command not found\n", input);
         print = true;
-        //break;
-        
+        // break;
       }
       token = strtok(NULL, " ");
     }
-  
+
     setbuf(stdout, NULL);
-
   }
-  
-
 
   return 0;
 }
-bool is_path(char ind_path[], char* token)
+
+bool is_path(char ind_path[], char *token)
 {
   // is it a PATH?
   bool print = false;
   char *path = getenv("PATH");
   // path isn't null and path isn't an empty string
-  if(path != NULL && path[0] != '\0')
+  if (path != NULL && path[0] != '\0')
   {
     // copy it over to consume the tokens
     char token_path[100];
-    strcpy(token_path,path);
+    strcpy(token_path, path);
     // meant to hold extracted paths
     // ! char ind_path[100];
-    char* path_token = strtok(token_path,":");
+    char *path_token = strtok(token_path, ":");
     bool FOUND = false;
-    while(path_token != NULL && FOUND == false)
+    while (path_token != NULL && FOUND == false)
     {
       ind_path[0] = '\0';
-      strcat(ind_path,path_token);
-      //grabbed a path
-      strcat(ind_path,"/");
-      strcat(ind_path,token);
-      //tack on the user-given cmd : is it executable?
-      if(access(ind_path,X_OK) == 0)
+      strcat(ind_path, path_token);
+      // grabbed a path
+      strcat(ind_path, "/");
+      strcat(ind_path, token);
+      // tack on the user-given cmd : is it executable?
+      if (access(ind_path, X_OK) == 0)
       {
         FOUND = true;
         // get out of loop, do not go into else branch!
         print = true;
         return print;
-        //break;
+        // break;
       }
       // keep going until they are all checked, null out ind path first
-      
-      path_token = strtok(NULL,":");
 
+      path_token = strtok(NULL, ":");
     }
     // uh oh, no more left to check, default into the type else case
     return print;
-  }
-}
-void cat_subtokens(char dest[], char* token)
-{
-  while(token != NULL)
-  {
-    if(strlen(dest) > 0)
-    {
-    strcat(dest," ");
-    }
-    strcat(dest,token);
-    token = strtok(NULL, " ");
-    //printf("%s, this is the token at 93",token);
   }
 }
