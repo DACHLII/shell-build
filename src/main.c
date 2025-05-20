@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-bool is_path(char* ind_path[], char* token);
+bool is_path(char ind_path[], char* token);
 int main(int argc, char *argv[]) {
   // Flush after every printf
   setbuf(stdout, NULL);
@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-bool is_path(char* ind_path[], char* token)
+bool is_path(char ind_path[], char* token)
 {
   // is it a PATH?
   bool print = false;
