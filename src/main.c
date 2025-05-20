@@ -115,7 +115,9 @@ int main(int argc, char *argv[]) {
             type_err[strlen(type_err)] = '\0';
             printf("%s: not found\n", type_err);
             type_err[0] = '\0';
+            input[0] ='\0';
             print = true;
+            
             //break;
           }
         }
@@ -157,6 +159,7 @@ int main(int argc, char *argv[]) {
         //printf("enters else branch");
         printf("%s: command not found\n", input);
         print = true;
+        input[0] ='\0';
         //break;
         
       }
@@ -174,7 +177,6 @@ int main(int argc, char *argv[]) {
 bool is_path(char ind_path[], char* token)
 {
   // is it a PATH?
-  ind_path[0] = '\0';
   bool print = false;
   char *path = getenv("PATH");
   // path isn't null and path isn't an empty string
