@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
   bool running = true;
   char input[100];
   char token_input[100];
+  char* ind_path[100];
 
   while(running)
   {
@@ -91,59 +92,16 @@ int main(int argc, char *argv[]) {
         else
         {
           // is it a PATH?
-          char *path = getenv("PATH");
-          // path isn't null and path isn't an empty string
-          if(path != NULL && path[0] != '\0')
+          //char ind_path[100];
+          print = is_path(ind_path,token);
+          if(print == true)
           {
-
-            // sus
-
-            // copy it over to consume the tokens
-            char token_path[100];
-            strcpy(token_path,path);
-            // meant to hold extracted paths
-            char ind_path[100];
-            char* path_token = strtok(token_path,":");
-            bool FOUND = false;
-            while(path_token != NULL && FOUND == false)
-            {
-              strcat(ind_path,path_token);
-              //grabbed a path
-              strcat(ind_path,"/");
-              strcat(ind_path,token);
-              //tack on the user-given cmd : is it executable?
-              if(access(ind_path,X_OK) == 0)
-              {
-                printf("%s is %s\n",token,ind_path);
-
-                FOUND = true;
-                // get out of loop, do not go into else branch!
-                print = true;
-                //break;
-              }
-              // keep going until they are all checked, null out ind path first
-              ind_path[0] = '\0';
-              path_token = strtok(NULL,":");
-
-            }
-            // uh oh, no more left to check, default into the type else case
-
+            printf("%s is %s\n",token,ind_path);
           }
           // general type invalid case
-          if(print == false)
+          else 
           {
-            // printf("%s", token);
-            // if(strcmp(token,"invalid_apple_command") == 0 || strcmp(token,"invalid_pear_command") == 0  || strcmp(token,"invalid_grape_command") == 0  ||strcmp(token,"invalid_mango_command") == 0 || strcmp(token,"invalid_blueberry_command") == 0 || strcmp(token,"invalid_banana_command") == 0 ||strcmp(token,"invalid_orange_command") == 0  ) 
-            // {
-            //   printf("entering else statement for PATH?"); //sergkijkjy
-            // }
             char type_err[100];
-            //strcat(type_err,token);
-            // I already grab the first token so just check if there are any more)
-            //printf("%s, this is the token at 85",token);
-            //debugging awef
-            //token = strtok(NULL," ");
-            
             while(token != NULL)
             {
               if(strlen(type_err) > 0)
@@ -163,7 +121,7 @@ int main(int argc, char *argv[]) {
         }
         //continue;
       }
-      else if()//call boolean function to check if the path is good)
+      else if(is_path(ind_path,token) == true)//call boolean function to check if the path is good)
       {
         char* argv[10];
         char* argv_token_parse = strcpy(argv_token_parse,token_path);
@@ -211,4 +169,43 @@ int main(int argc, char *argv[]) {
 
 
   return 0;
+}
+bool is_path(char*[] ind_path, char* token)
+{
+  // is it a PATH?
+  bool print = false;
+  char *path = getenv("PATH");
+  // path isn't null and path isn't an empty string
+  if(path != NULL && path[0] != '\0')
+  {
+    // copy it over to consume the tokens
+    char token_path[100];
+    strcpy(token_path,path);
+    // meant to hold extracted paths
+    // ! char ind_path[100];
+    char* path_token = strtok(token_path,":");
+    bool FOUND = false;
+    while(path_token != NULL && FOUND == false)
+    {
+      strcat(ind_path,path_token);
+      //grabbed a path
+      strcat(ind_path,"/");
+      strcat(ind_path,token);
+      //tack on the user-given cmd : is it executable?
+      if(access(ind_path,X_OK) == 0)
+      {
+        FOUND = true;
+        // get out of loop, do not go into else branch!
+        print = true;
+        return print;
+        //break;
+      }
+      // keep going until they are all checked, null out ind path first
+      ind_path[0] = '\0';
+      path_token = strtok(NULL,":");
+
+    }
+    // uh oh, no more left to check, default into the type else case
+    return print;
+  }
 }
