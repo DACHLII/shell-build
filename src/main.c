@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
           if(path != NULL && path[0] != '\0')
           {
 
-            
+            // sus
 
             // copy it over to consume the tokens
             char token_path[100];
