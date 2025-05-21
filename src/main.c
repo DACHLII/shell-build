@@ -82,11 +82,24 @@ int main(int argc, char *argv[])
         }
         
       }
+      else if (strcmp(token, "cd") == 0)
+      {
+        token = strtok(NULL, " ");
+        // consume CD token, perform absolute / relative path check
+        if(token[0] == '/')
+        {
+          // absolute path case : check suing chdir()
+          if(chdir(token) != 0)
+          {
+            printf("cd: %s: No such file or directory\n", token);
+          }
+        }
+      }
       else if (strcmp(token, "type") == 0)
       {
         // printf("enters else if branch");
         //  grab the next token (Ideally echo, exit, etc.)
-        token = strtok(NULL, "");
+        token = strtok(NULL, " ");
         // printf("%s is the curr token, %s");
 
         // very general case for standard checks on existing commands using type
