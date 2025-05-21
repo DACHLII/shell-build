@@ -6,6 +6,8 @@
 #include <sys/wait.h>
 
 bool is_path(char ind_path[], char *token);
+void cd(char* token);
+void cd_relative(char* token);
 int main(int argc, char *argv[])
 {
   // Flush after every printf
@@ -85,15 +87,7 @@ int main(int argc, char *argv[])
       else if (strcmp(token, "cd") == 0)
       {
         token = strtok(NULL, " ");
-        // consume CD token, perform absolute / relative path check
-        if(token[0] == '/')
-        {
-          // absolute path case : check suing chdir()
-          if(chdir(token) != 0)
-          {
-            printf("cd: %s: No such file or directory\n", token);
-          }
-        }
+        cd(token);
       }
       else if (strcmp(token, "type") == 0)
       {
@@ -227,4 +221,83 @@ bool is_path(char ind_path[], char *token)
     // uh oh, no more left to check, default into the type else case
     return print;
   }
+}
+void cd(char* token)
+{
+  
+  // consume CD token, perform absolute / relative path check
+  // absolute path case : check suing chdir()
+  if(token[0] == '/')
+  {
+    
+    if(chdir(token) != 0)
+    {
+      printf("cd: %s: No such file or directory\n", token);
+    }
+  }
+  else
+  {
+    cd_relative(token);
+  }
+        
+}
+void cd_relative(char* token)
+{
+  char tokenize_cwd[100];
+  getcwd(tokenize_cwd, sizeof(tokenize_cwd));
+
+  char tokenize_rel[100];
+  strcpy(tokenize_rel,token);
+
+  char rel_tokens[10][100];
+  char cwd_tokens[10][100];
+
+  char* token_cwd = strtok(tokenize_cwd, "/");
+  char* token_rel = strtok(tokenize_rel,"/");
+  int num_cwd_tokens = 0;
+  int num_rel_tokens = 0;
+
+  while(token_cwd != NULL || token_rel != NULL)
+  {
+    if(token_cwd != NULL)
+    {
+      strcpy(cwd_tokens[num_cwd_tokens],token_cwd);
+      token_cwd = strtok(NULL,"/"); 
+      num_cwd_tokens++;
+    }
+    if(token_rel != NULL)
+    {
+      strcpy(rel_tokens[num_rel_tokens],token_rel);
+      token_rel = strtok(NULL,"/");
+      num_rel_tokens++;
+    }
+    
+  }
+  // now while loop to construct the new path based on relative
+  char new_path[100];
+  int index = 0;
+  while(index <= num_rel_tokens)
+  {
+    // move up to the parent directory, get rid of child dir token
+    if(strcmp(rel_tokens[index],"..") == 0)
+    {
+      cwd_tokens[num_cwd_tokens] = '\0';
+      num_cwd_tokens--;
+    }
+    // dir name that is NOT just the cwd
+    else if(strcmp(rel_tokens[index],".")!= 0)
+    {
+      cwd_tokens[num_cwd_tokens] == rel_tokens[index];
+      num_cwd_tokens++;
+    }
+  }
+  // cat together
+  index = 0;
+  while(index <= num_cwd_tokens)
+  {
+    strcat(new_path,"/");
+    strcat(new_path[index],cwd_tokens[index]);
+
+  }
+
 }
