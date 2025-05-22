@@ -8,6 +8,7 @@
 bool is_path(char ind_path[], char *token);
 void cd(char* token);
 void cd_relative(char* token);
+
 int main(int argc, char *argv[])
 {
   // Flush after every printf
@@ -244,60 +245,85 @@ void cd(char* token)
 void cd_relative(char* token)
 {
   char tokenize_cwd[100];
+  tokenize_cwd[0] = '\0';
   getcwd(tokenize_cwd, sizeof(tokenize_cwd));
+  printf("%s cur cwd\n", tokenize_cwd);
 
   char tokenize_rel[100];
-  strcpy(tokenize_rel,token);
+  tokenize_rel[0] = '\0';
+  strcpy(tokenize_rel,token); // token is going to be holding the whole path
 
-  char rel_tokens[10][100];
+  char rel_tokens[10][100]; // so I can hold multiple strings at a time
+  memset(rel_tokens,0,sizeof(rel_tokens));
   char cwd_tokens[10][100];
+  memset(cwd_tokens,0,sizeof(cwd_tokens));
 
   char* token_cwd = strtok(tokenize_cwd, "/");
+  printf("%s cwd token\n",token_cwd);
   char* token_rel = strtok(tokenize_rel,"/");
   int num_cwd_tokens = 0;
   int num_rel_tokens = 0;
-
-  while(token_cwd != NULL || token_rel != NULL)
+  //printf("tokenize_cwd %s\n", tokenize_cwd);
+  //printf("tokenize_rel %s\n", tokenize_rel);
+  while(token_cwd != NULL )
   {
-    if(token_cwd != NULL)
-    {
+
       strcpy(cwd_tokens[num_cwd_tokens],token_cwd);
       token_cwd = strtok(NULL,"/"); 
+      printf("%s cwd token\n",cwd_tokens[num_cwd_tokens]);
       num_cwd_tokens++;
-    }
-    if(token_rel != NULL)
-    {
-      strcpy(rel_tokens[num_rel_tokens],token_rel);
-      token_rel = strtok(NULL,"/");
-      num_rel_tokens++;
-    }
     
   }
+  while(token_rel != NULL)
+  {
+      strcpy(rel_tokens[num_rel_tokens],token_rel);
+      token_rel = strtok(NULL,"/");
+      //printf("%s rel token\n",rel_tokens[num_rel_tokens]);
+      num_rel_tokens++;
+    
+  }
+  //printf("past the tokenizing while loop");
   // now while loop to construct the new path based on relative
   char new_path[100];
+  new_path[0] = '\0';
   int index = 0;
-  while(index <= num_rel_tokens)
+
+  while(index < num_rel_tokens)
   {
     // move up to the parent directory, get rid of child dir token
     if(strcmp(rel_tokens[index],"..") == 0)
     {
-      cwd_tokens[num_cwd_tokens] = '\0';
+      strcpy(cwd_tokens[num_cwd_tokens-1],"\0");
+      //printf("%s cwd_token case 1\n", cwd_tokens[num_cwd_tokens]);
       num_cwd_tokens--;
     }
-    // dir name that is NOT just the cwd
-    else if(strcmp(rel_tokens[index],".")!= 0)
+    // dir name that is NOT just the cwd, append to path
+    else if(strcmp(rel_tokens[index],".") != 0)
     {
-      cwd_tokens[num_cwd_tokens] == rel_tokens[index];
+      strcpy(cwd_tokens[num_cwd_tokens],rel_tokens[index]);
+      //printf("%s cwd token case 2\n", cwd_tokens[num_cwd_tokens]);
       num_cwd_tokens++;
     }
+    index++;
   }
+  //printf("past the construction while loop");
   // cat together
   index = 0;
-  while(index <= num_cwd_tokens)
+  strcat(new_path,"/");
+  while(index < num_cwd_tokens)
   {
-    strcat(new_path,"/");
-    strcat(new_path[index],cwd_tokens[index]);
+    
+    strcat(new_path,cwd_tokens[index]);
+    index++;
+    if(index != num_cwd_tokens)
+    {
+      strcat(new_path,"/");
+    }
+    
+    
 
   }
-
+  new_path[strlen(new_path)] = '\0';
+  //printf("%s\n",new_path);
+  chdir(new_path);
 }
