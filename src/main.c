@@ -236,6 +236,11 @@ void cd(char* token)
       printf("cd: %s: No such file or directory\n", token);
     }
   }
+  else if(token[0] == '~') 
+  {
+    char *home = getenv("HOME");
+    chdir(home);
+  }
   else
   {
     cd_relative(token);
@@ -328,5 +333,10 @@ void cd_relative(char* token)
   }
   new_path[strlen(new_path)] = '\0';
   //printf("%s\n",new_path);
-  chdir(new_path);
+  
+  if(chdir(new_path) != 0)
+    {
+      printf("cd: %s: No such file or directory\n", token);
+    }
+    
 }
