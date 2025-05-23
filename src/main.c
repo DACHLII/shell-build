@@ -5,9 +5,11 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+bool echo(char* token, char input[]);
 bool is_path(char ind_path[], char *token);
 void cd(char* token);
 void cd_relative(char* token);
+bool single_quote(char output[], char* token, char input[]);
 
 int main(int argc, char *argv[])
 {
@@ -54,27 +56,7 @@ int main(int argc, char *argv[])
       }
       else if (strcmp(token, "echo") == 0)
       {
-
-        char echo[100];
-        echo[0] = '\0';
-        char echo_input[100];
-
-        strcpy(echo_input, input);
-        token = strtok(echo_input, " ");
-        token = strtok(NULL, " ");
-
-        while (token != NULL)
-        {
-          if (strlen(echo) > 0)
-          {
-            strcat(echo, " ");
-          }
-          strcat(echo, token);
-          token = strtok(NULL, " ");
-        }
-        printf("%s\n", echo);
-        print = true;
-        // break;
+       print = echo(token, input);
       }
       else if (strcmp(token, "pwd") == 0)
       {
@@ -183,7 +165,37 @@ int main(int argc, char *argv[])
 
   return 0;
 }
+bool echo(char* token, char input[])
+{
+  bool print = false;
+  char echo[100];
+  echo[0] = '\0';
+  char echo_input[100];
 
+  strcpy(echo_input, input);
+  token = strtok(echo_input, " ");
+  token = strtok(NULL, " ");
+
+  print = single_quote(echo,token,input);
+  if(!print)
+  {
+    while (token != NULL)
+    {
+      if (strlen(echo) > 0)
+      {
+        strcat(echo, " ");
+      }
+      strcat(echo, token);
+      token = strtok(NULL, " ");
+    }
+    printf("%s\n", echo);
+    print = true;
+  }
+
+  
+
+  return print;
+}
 bool is_path(char ind_path[], char *token)
 {
   // is it a PATH?
@@ -327,8 +339,7 @@ void cd_relative(char* token)
     {
       strcat(new_path,"/");
     }
-    
-    
+
 
   }
   new_path[strlen(new_path)] = '\0';
@@ -339,4 +350,63 @@ void cd_relative(char* token)
       printf("cd: %s: No such file or directory\n", token);
     }
     
+}
+bool single_quote(char output[], char* token, char input[])
+{
+  output[0] = '\0';
+  bool print = false;
+  if(token[0] == '\'')
+  {
+    // need to retokenize it differently based on ' instead of " "
+    char quote_input[100];
+    strcpy(quote_input,input);
+    int quote_input_index = 0;
+    int output_index = 0;
+    bool single_quote_mode = false;
+    bool closed_quote = false;
+    //bool done_quote = false;
+    int quote_input_max = strlen(quote_input);
+    while( quote_input_index < quote_input_max)
+    {
+      // haven't found quote and mode isn't activated yet
+      if(single_quote_mode)
+      {
+        // looks like an unnecessary check, but its fencepost solution T-T
+        if(quote_input[quote_input_index] != '\'')
+        {
+          output[output_index] = quote_input[quote_input_index];
+          output_index++;
+        }
+
+      }
+      // quote case
+      if(quote_input[quote_input_index] == '\'')
+      {
+        if(!single_quote_mode)
+        {
+          single_quote_mode = true;
+        }
+        else if(single_quote_mode)
+        {
+          // done with quote
+          single_quote_mode = false;
+          closed_quote = true;
+        }
+        
+        
+      }
+      else if(!single_quote_mode && closed_quote && quote_input[quote_input_index] == ' ')
+        {
+          output[output_index] = ' ';
+          output_index++;
+          closed_quote = false;
+        }
+      // if we haven't found a quote and mode isn't activated, just keep going
+      quote_input_index++;
+    }
+    output[output_index] = '\0';
+    printf("%s\n", output);
+    print = true;
+  }
+  return print;
 }
