@@ -9,7 +9,8 @@ bool echo(char* token, char input[]);
 bool is_path(char ind_path[], char *token);
 void cd(char* token);
 void cd_relative(char* token);
-bool single_quote(char output[], char* token, char input[]);
+bool cat(char* token, char input[]);
+bool single_quote(char* output_args[], char output[], char* token, char input[]);
 
 int main(int argc, char *argv[])
 {
@@ -57,6 +58,10 @@ int main(int argc, char *argv[])
       else if (strcmp(token, "echo") == 0)
       {
        print = echo(token, input);
+      }
+      else if (strcmp(token, "echo") == 0)
+      {
+       print = cat(token, input);
       }
       else if (strcmp(token, "pwd") == 0)
       {
@@ -169,6 +174,7 @@ bool echo(char* token, char input[])
 {
   bool print = false;
   char echo[100];
+  char* output_args[100];
   echo[0] = '\0';
   char echo_input[100];
 
@@ -176,7 +182,7 @@ bool echo(char* token, char input[])
   token = strtok(echo_input, " ");
   token = strtok(NULL, " ");
 
-  print = single_quote(echo,token,input);
+  print = single_quote(output_args,echo,token,input);
   if(!print)
   {
     while (token != NULL)
@@ -196,6 +202,21 @@ bool echo(char* token, char input[])
 
   return print;
 }
+bool cat(char* token, char input[])
+{
+  bool print = false;
+  char cat[100];
+  char* output_args[100];
+  cat[0] = '\0';
+  char cat_input[100];
+
+  strcpy(cat_input, input);
+  token = strtok(cat_input, " ");
+  token = strtok(NULL, " ");
+
+  print = single_quote(output_args,cat,token,input);
+}
+
 bool is_path(char ind_path[], char *token)
 {
   // is it a PATH?
@@ -351,7 +372,7 @@ void cd_relative(char* token)
     }
     
 }
-bool single_quote(char output[], char* token, char input[])
+bool single_quote(char* output_args[], char output[], char* token, char input[])
 {
   output[0] = '\0';
   bool print = false;
@@ -362,6 +383,10 @@ bool single_quote(char output[], char* token, char input[])
     strcpy(quote_input,input);
     int quote_input_index = 0;
     int output_index = 0;
+
+    char arg_arr[100];
+    int arg_index = 0;
+    int arg_string_index = 0;
     bool single_quote_mode = false;
     bool closed_quote = false;
     //bool done_quote = false;
@@ -408,5 +433,7 @@ bool single_quote(char output[], char* token, char input[])
     printf("%s\n", output);
     print = true;
   }
+  // allright time to retokenize the ouput array so I can put it into the args array
+ 
   return print;
 }
