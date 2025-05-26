@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         // printf("%s is the curr token, %s");
 
         // very general case for standard checks on existing commands using type
-        if (strcmp(token, "exit") == 0 || strcmp(token, "echo") == 0 || strcmp(token, "type") == 0 || strcmp(token, "pwd") == 0)
+        if (strcmp(token, "exit") == 0 || strcmp(token, "echo") == 0 || strcmp(token, "type") == 0 || strcmp(token, "pwd") == 0 || strcmp(token,"history") == 0)
         {
           printf("%s is a shell builtin\n", token);
           print = true;
