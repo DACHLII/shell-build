@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-bool history(char* cmd_history[], int history_index,bool list, char input[]);
+bool history(char* cmd_history[], int history_index,bool list, char input[], char* token);
 bool echo(char* token, char input[]);
 bool is_path(char ind_path[], char *token);
 void cd(char* token);
@@ -35,12 +35,14 @@ int main(int argc, char *argv[])
     fgets(input, 100, stdin);
     // null terminate the input
     input[strlen(input) - 1] = '\0';
-    history(cmd_history,history_index,false,input);
-    history_index++;
     strcpy(token_input, input);
+    char *token = strtok(token_input, " ");
+    history(cmd_history,history_index,false,input,token);
+    history_index++;
+    
     // check for exit
 
-    char *token = strtok(token_input, " ");
+    
     bool print = false;
     // printf("%s is the token at line 30",token);
     //  parse the command while checking for builtins
@@ -61,7 +63,7 @@ int main(int argc, char *argv[])
       }
       else if(strcmp(token,"history") == 0)
       {
-        print = history(cmd_history,history_index,true,input);
+        print = history(cmd_history,history_index,true,input,token);
       }
       else if (strcmp(token, "echo") == 0)
       {
@@ -179,16 +181,26 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-bool history(char* cmd_history[], int history_index,bool list, char input[])
+bool history(char* cmd_history[], int history_index,bool list, char input[], char* token)
 {
   bool print = false;
   // if history cmd is invoked, do smth
   if(list)
   {
-    // list out the history 
-    for(int i = 0; i < history_index; i++)
+    int history_limit = 0;
+    token = strtok(NULL," ");
+    // I'll assume that its a number to make it easier ig
+    if(token != NULL)
     {
-      printf("   %d  %s\n",i,cmd_history[i]);
+      history_limit = atoi(token);
+      history_limit++;
+    }
+    // list out the history 
+    //printf("%d %d\n",history_limit,history_index);
+    int i = (history_limit > 0) ? ((history_index+1)-history_limit) : 0;
+    for(; i < history_index; i++)
+    {
+      printf("   %d  %s\n",i+1,cmd_history[i]);
     }
   }
   else
