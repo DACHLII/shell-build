@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+bool history(char* cmd_history[], int history_index,bool list, char input[]);
 bool echo(char* token, char input[]);
 bool is_path(char ind_path[], char *token);
 void cd(char* token);
@@ -21,11 +22,12 @@ int main(int argc, char *argv[])
 
   // REPL loop
   // Wait for user input
+  char* cmd_history[100];
   bool running = true;
   char input[100];
   char token_input[100];
   char ind_path[100];
-
+  int history_index = 0;
   while (running)
   {
     printf("$ ");
@@ -33,6 +35,8 @@ int main(int argc, char *argv[])
     fgets(input, 100, stdin);
     // null terminate the input
     input[strlen(input) - 1] = '\0';
+    history(cmd_history,history_index,false,input);
+    history_index++;
     strcpy(token_input, input);
     // check for exit
 
@@ -55,11 +59,15 @@ int main(int argc, char *argv[])
           exit(1);
         }
       }
+      else if(strcmp(token,"history") == 0)
+      {
+        print = history(cmd_history,history_index,true,input);
+      }
       else if (strcmp(token, "echo") == 0)
       {
        print = echo(token, input);
       }
-      else if (strcmp(token, "echo") == 0)
+      else if (strcmp(token, "cat") == 0)
       {
        print = cat(token, input);
       }
@@ -170,6 +178,28 @@ int main(int argc, char *argv[])
 
   return 0;
 }
+
+bool history(char* cmd_history[], int history_index,bool list, char input[])
+{
+  bool print = false;
+  // if history cmd is invoked, do smth
+  if(list)
+  {
+    // list out the history 
+    for(int i = 0; i < history_index; i++)
+    {
+      printf("   %d  %s\n",i,cmd_history[i]);
+    }
+  }
+  else
+  {
+    // add to the history
+    cmd_history[history_index] = strdup(input);
+    print = true;
+
+  }
+  return print;
+}
 bool echo(char* token, char input[])
 {
   bool print = false;
@@ -202,6 +232,7 @@ bool echo(char* token, char input[])
 
   return print;
 }
+
 bool cat(char* token, char input[])
 {
   bool print = false;
@@ -256,6 +287,7 @@ bool is_path(char ind_path[], char *token)
     return print;
   }
 }
+
 void cd(char* token)
 {
   
