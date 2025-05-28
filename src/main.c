@@ -3,8 +3,10 @@
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <termios.h>
 #include <sys/wait.h>
 
+void raw_terminal_parsing(char input[], char* cmd_history[], int history_index);
 bool history(char* cmd_history[], int history_index,bool list, char input[], char* token);
 bool echo(char* token, char input[]);
 bool is_path(char ind_path[], char *token);
@@ -24,18 +26,24 @@ int main(int argc, char *argv[])
   // Wait for user input
   char* cmd_history[100];
   bool running = true;
-  char input[100];
-  char token_input[100];
+  // making input buffer large so it can run in both raw and regular mode safely
+  char input[1024];
+  char token_input[1024];
   char ind_path[100];
   int history_index = 0;
   while (running)
   {
     printf("$ ");
     // read
-    fgets(input, 100, stdin);
+    // ! need to replace line 39 with my logic
+    //fgets(input, 100, stdin);
+    raw_terminal_parsing(input,cmd_history,history_index);
+    //
+    // ^ should ideally do the same thing as fgets but broken down :))
     // null terminate the input
-    input[strlen(input) - 1] = '\0';
+    //input[strlen(input) - 1] = '\0';
     strcpy(token_input, input);
+    //printf("%s token input", token_input);
     char *token = strtok(token_input, " ");
     history(cmd_history,history_index,false,input,token);
     history_index++;
@@ -181,6 +189,95 @@ int main(int argc, char *argv[])
   return 0;
 }
 
+void raw_terminal_parsing(char input[], char* cmd_history[], int history_index)
+{
+  struct termios ori_termios;
+  tcgetattr(STDIN_FILENO,&ori_termios);
+  // begin setting flags on the copied attr
+  struct termios raw_termios = ori_termios;
+  // ! might need to mess with what flags I have set later on too
+  raw_termios.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
+  tcsetattr(STDIN_FILENO,TCSAFLUSH,&raw_termios);
+  // note : \n is basically when I should stop my parsing
+  int pos = 0;
+  char c;
+  int history_pos = history_index;
+  bool done = false;
+  while(!done)
+  {
+    read(STDIN_FILENO,&c,1);
+    // alphabetical char case
+    if( c >= 32 && c <= 126)
+    {
+      input[pos] = c;
+      // if( c == 'd')
+      // {
+      //   printf("pos : %d",pos);
+      // }
+      pos++;
+
+    }
+    // backspace case
+    else if(c == 127 && pos > 0)
+    {
+      pos--;
+      input[pos] = '\0';
+      printf("\b \b");
+      
+      
+    }
+    // up arrow or back arrow case ( need to handle replacing input with history contents as well here!)
+    else if(c == '\x1b')
+    {
+      input[pos] = c;
+      pos++;
+      read(STDIN_FILENO,&c,1);
+      if(c == '[')
+      {
+        input[pos] = c;
+        pos++;
+        read(STDIN_FILENO,&c,1);
+        if(c == 'A')
+        {
+          // at the point where we know the input is up arrow, no need to copy to buffer anymore b/c 
+          // it will be replaced with history
+
+          // up arrow, read from the 
+          if(history_pos > 0)
+          {
+            history_pos--;
+          }
+          strcpy(input,cmd_history[history_pos]);
+          
+
+        }
+        else if(c == 'B')
+        {
+          if(history_pos < history_index - 1)
+          {
+            history_pos++;
+          }
+          strcpy(input,cmd_history[history_pos]);
+        }
+        printf("\r\033[K");
+        printf("$ %s",input);
+      }
+    }
+    // enter case
+    else if(c == 10 || c == 13)
+    {
+      //pos++;
+      //printf("pos null term : %d",pos);
+      input[pos] = '\0';
+      //printf("\n");
+      printf("%s\n",input);
+      done = true;
+    }
+  }
+
+  tcsetattr(STDIN_FILENO,TCSAFLUSH,&ori_termios);
+
+}
 bool history(char* cmd_history[], int history_index,bool list, char input[], char* token)
 {
   bool print = false;
