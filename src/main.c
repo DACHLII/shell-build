@@ -203,6 +203,7 @@ void raw_terminal_parsing(char input[], char* cmd_history[], int history_index)
   char c;
   int history_pos = history_index;
   bool done = false;
+  bool was_printed = false;
   while(!done)
   {
     read(STDIN_FILENO,&c,1);
@@ -210,10 +211,6 @@ void raw_terminal_parsing(char input[], char* cmd_history[], int history_index)
     if( c >= 32 && c <= 126)
     {
       input[pos] = c;
-      // if( c == 'd')
-      // {
-      //   printf("pos : %d",pos);
-      // }
       pos++;
 
     }
@@ -248,6 +245,7 @@ void raw_terminal_parsing(char input[], char* cmd_history[], int history_index)
             history_pos--;
           }
           strcpy(input,cmd_history[history_pos]);
+          pos = strlen(input);
           
 
         }
@@ -258,19 +256,27 @@ void raw_terminal_parsing(char input[], char* cmd_history[], int history_index)
             history_pos++;
           }
           strcpy(input,cmd_history[history_pos]);
+          pos = strlen(input);
         }
         printf("\r\033[K");
         printf("$ %s",input);
+        was_printed = true;
       }
     }
     // enter case
     else if(c == 10 || c == 13)
     {
-      //pos++;
-      //printf("pos null term : %d",pos);
       input[pos] = '\0';
-      //printf("\n");
-      printf("%s\n",input);
+      if(was_printed)
+      {
+        printf("\n");
+        //printf("REPL input before exec: '%s'\n", input);
+      }
+      else
+      {
+        printf("%s\n",input);
+      }
+      
       done = true;
     }
   }
