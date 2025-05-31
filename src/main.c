@@ -38,17 +38,44 @@ int main(int argc, char *argv[])
     // ! need to replace line 39 with my logic
     //fgets(input, 100, stdin);
     raw_terminal_parsing(input,cmd_history,history_index);
-    //
-    // ^ should ideally do the same thing as fgets but broken down :))
-    // null terminate the input
-    //input[strlen(input) - 1] = '\0';
+
+    // check for redirection
+    char extracted_input[1024]; // cmd input only
+    char redir_input[1024];
+    bool redir = false;
     strcpy(token_input, input);
+    char *redir_token = strtok(token_input);
+    bool divert_input = false;
+    while(redir_token != NULL)
+    {
+      if(redir_token != ">" && !divert_input)
+      {
+        strcat(extracted_input,redir_token);
+        divert_input = true;
+      }
+      else if(redir_token == ">" || divert_input)
+      {
+        strcat(redir_input,redir_token);
+        redir = true;
+      }
+    }
+    // ! remember to set token input buffer correctly later
+    token_input[0] = "\0";
+    if(redir)
+    {
+      strcpy(token_input,extracted_input);
+    }
+    else
+    {
+      strcpy(token_input,input);
+    }
+
+    
     //printf("%s token input", token_input);
     char *token = strtok(token_input, " ");
     history(cmd_history,history_index,false,input,token);
     history_index++;
     
-    // check for exit
 
     
     bool print = false;
@@ -284,6 +311,12 @@ void raw_terminal_parsing(char input[], char* cmd_history[], int history_index)
   tcsetattr(STDIN_FILENO,TCSAFLUSH,&ori_termios);
 
 }
+
+// ! instead of passing the redir bool in here, I'll have to pass it in through the other functions for cmds
+void redir_output(char redir_input)
+{
+
+}
 bool history(char* cmd_history[], int history_index,bool list, char input[], char* token)
 {
   bool print = false;
@@ -360,7 +393,13 @@ bool cat(char* token, char input[])
   token = strtok(cat_input, " ");
   token = strtok(NULL, " ");
 
+  // this will just get rid of the single quotes i guess
   print = single_quote(output_args,cat,token,input);
+
+  // so now I want to loop through the tokens
+  // open the file
+  // read contents 
+  // direct to stdout ( should be a general case, as stdout should be modified if redir tokens exist)
 }
 
 bool is_path(char ind_path[], char *token)
